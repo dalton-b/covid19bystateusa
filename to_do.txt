@@ -1,0 +1,15 @@
+To-Do:
+Fix time tick marks to be readable
+Double Y axes - number of people sick and percentage of population sick
+Expand page margins
+Make graph titles more readable
+Organize Guam and Puerto Rico
+Add American Samoa
+
+
+
+
+
+
+
+Done:
