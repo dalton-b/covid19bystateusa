@@ -38,6 +38,11 @@ confirmed_US = adjust_header(confirmed_US)
 r = request.urlopen('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv').read().decode('utf8').split("\n")
 reader = csv.reader(r)
 deaths_US = pd.DataFrame(reader)
+deaths_US = adjust_header(deaths_US)
+
+# r = request.urlopen('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv').read().decode('utf8').split("\n")
+# reader = csv.reader(r)
+# deaths_global = pd.DataFrame(reader)
 
 
 def sort_by_state(df):
@@ -48,9 +53,8 @@ def sort_by_state(df):
 confirmed_US = confirmed_US.apply(pd.to_numeric, errors='ignore')
 confirmed_US_by_state = sort_by_state(confirmed_US)
 
-deaths_US = confirmed_US.apply(pd.to_numeric, errors='ignore')
+deaths_US = deaths_US.apply(pd.to_numeric, errors='ignore')
 deaths_US_by_state = sort_by_state(deaths_US)
-
 
 def plot_active(df, name, start_date):
 
@@ -141,8 +145,8 @@ def plot_active(df, name, start_date):
     ax.set_ylabel(plot_name)
     ax2.set_ylabel("Percentage of Population Sick")
     plt.gcf().subplots_adjust(bottom=0.15)
-    fig.suptitle(index + " " + today)
-    fig.savefig(name + '/Active_' + index + '.png', bbox_inches='tight')
+    fig.suptitle('Active Cases ' + index + " " + today)
+    fig.savefig('plots/' + name + '/Active_' + index + '.png', bbox_inches='tight')
     plt.close()
 
 
@@ -165,12 +169,16 @@ def plot_deaths(df, start_date):
       sma_deaths.append(np.sum(new_deaths[i-sma:i])/sma)
 
     fig, ax = plt.subplots()
+    max_cases = np.nanmax(sma_deaths)
+    if max_cases == 0:
+      max_cases = 100
+    ax.set(ylim=(0, max_cases * 1.1))
     ax.plot(deaths.index[sma:], sma_deaths, color='orange')
     ax.set_xticks(np.arange(0, len(sma_deaths), step=7))
     ax.tick_params(axis='x', rotation=45)
-    ax.set_ylabel(str(sma) + ' Day Moving Average of Deaths')
+    ax.set_ylabel(str(sma) + ' Day Moving Average')
     fig.suptitle("Deaths " + index + " " + today)
-    fig.savefig('Deaths/Deaths_' + index + '.png', bbox_inches='tight')
+    fig.savefig('plots/Deaths/Deaths_' + index + '.png', bbox_inches='tight')
     plt.close()
 
 
@@ -178,4 +186,4 @@ confirmed_US_by_state = confirmed_US_by_state.append(confirmed_US_by_state.sum(a
 plot_active(confirmed_US_by_state, "Active_Cases", "2/22/20")
 
 deaths_US_by_state = deaths_US_by_state.append(deaths_US_by_state.sum(axis=0).rename("Total"))
-plot_deaths(deaths_US_by_state, "2/22/20")
+plot_deaths(deaths_US_by_state, "3/16/20")
