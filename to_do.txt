@@ -1,8 +1,9 @@
 To-Do:
 
-
+Write an explainer page
+Add "global" page
+Use population numbers from dataset
 Make graph titles more readable
-Add "updated: ___" timestamp to web page
 Automatically update every day
 
 
@@ -16,3 +17,4 @@ Double Y axes - number of people sick and percentage of population sick
 Expand page margins
 Organize Guam and Puerto Rico
 Add American Samoa
+Add "updated: ___" timestamp to web page

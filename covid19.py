@@ -23,6 +23,9 @@ import numpy as np
 import datetime
 
 
+verbose = False
+
+
 def adjust_header(df):
     new_header = df.iloc[0]
     df = df[1:]
@@ -40,13 +43,18 @@ reader = csv.reader(r)
 deaths_US = pd.DataFrame(reader)
 deaths_US = adjust_header(deaths_US)
 
-# r = request.urlopen('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv').read().decode('utf8').split("\n")
-# reader = csv.reader(r)
-# deaths_global = pd.DataFrame(reader)
+r = request.urlopen('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv').read().decode('utf8').split("\n")
+reader = csv.reader(r)
+deaths_global = pd.DataFrame(reader)
+deaths_global = adjust_header(deaths_global)
 
 
 def sort_by_state(df):
     df = df.groupby("Province_State").sum()
+    return df
+
+def sort_by_country(df):
+    df = df.groupby("Country/Region").sum()
     return df
 
 
@@ -55,6 +63,15 @@ confirmed_US_by_state = sort_by_state(confirmed_US)
 
 deaths_US = deaths_US.apply(pd.to_numeric, errors='ignore')
 deaths_US_by_state = sort_by_state(deaths_US)
+
+
+deaths_global = deaths_global.apply(pd.to_numeric, errors='ignore')
+deaths_global_by_country = sort_by_country(deaths_global)
+
+if verbose:
+  confirmed_US_by_state.to_csv('confirmed_US_by_state.csv')
+  deaths_US_by_state.to_csv('deaths_US_by_state.csv')
+  deaths_global_by_country.to_csv("death_global_by_country.csv")
 
 def plot_active(df, name, start_date):
 
@@ -150,6 +167,9 @@ def plot_active(df, name, start_date):
     plt.close()
 
 
+confirmed_US_by_state = confirmed_US_by_state.append(confirmed_US_by_state.sum(axis=0).rename("Total"))
+plot_active(confirmed_US_by_state, "Active_Cases", "2/22/20")
+
 def plot_deaths(df, start_date):
 
   now = datetime.datetime.now()
@@ -164,26 +184,27 @@ def plot_deaths(df, start_date):
       new_deaths.append(deaths[i] - deaths[i-1])
 
     sma_deaths = []
-    sma = 5
-    for i in range(sma, len(new_deaths)):
-      sma_deaths.append(np.sum(new_deaths[i-sma:i])/sma)
+    sma = 8
+    mid = int(sma / 2)
+    for i in range(mid, len(new_deaths)-mid):
+      sma_deaths.append(np.sum(new_deaths[i-mid:i+mid])/sma)
 
     fig, ax = plt.subplots()
     max_cases = np.nanmax(sma_deaths)
     if max_cases == 0:
       max_cases = 100
     ax.set(ylim=(0, max_cases * 1.1))
-    ax.plot(deaths.index[sma:], sma_deaths, color='orange')
+    ax.plot(deaths.index[mid:], new_deaths[mid:], color='powderblue')
+    ax.plot(deaths.index[mid:len(deaths)-mid], sma_deaths, color='orange')
     ax.set_xticks(np.arange(0, len(sma_deaths), step=7))
     ax.tick_params(axis='x', rotation=45)
-    ax.set_ylabel(str(sma) + ' Day Moving Average')
+    ax.set_ylabel('Deaths')
     fig.suptitle("Deaths " + index + " " + today)
     fig.savefig('plots/Deaths/Deaths_' + index + '.png', bbox_inches='tight')
     plt.close()
 
-
-confirmed_US_by_state = confirmed_US_by_state.append(confirmed_US_by_state.sum(axis=0).rename("Total"))
-plot_active(confirmed_US_by_state, "Active_Cases", "2/22/20")
-
 deaths_US_by_state = deaths_US_by_state.append(deaths_US_by_state.sum(axis=0).rename("Total"))
 plot_deaths(deaths_US_by_state, "3/16/20")
+
+deaths_global_by_country = deaths_global_by_country.append(deaths_global_by_country.sum(axis=0).rename("Total"))
+plot_deaths(deaths_global_by_country, "2/16/20")
