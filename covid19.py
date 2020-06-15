@@ -168,7 +168,7 @@ def plot_active(df, name, start_date):
 
 
 confirmed_US_by_state = confirmed_US_by_state.append(confirmed_US_by_state.sum(axis=0).rename("Total"))
-plot_active(confirmed_US_by_state, "Active_Cases", "2/22/20")
+# plot_active(confirmed_US_by_state, "Active_Cases", "2/22/20")
 
 def plot_deaths(df, start_date):
 
@@ -186,6 +186,8 @@ def plot_deaths(df, start_date):
     sma_deaths = []
     sma = 8
     mid = int(sma / 2)
+    if index == 'Georgia':
+      hi = 0
     for i in range(mid, len(new_deaths)-mid):
       sma_deaths.append(np.sum(new_deaths[i-mid:i+mid])/sma)
 
@@ -207,4 +209,4 @@ deaths_US_by_state = deaths_US_by_state.append(deaths_US_by_state.sum(axis=0).re
 plot_deaths(deaths_US_by_state, "3/16/20")
 
 deaths_global_by_country = deaths_global_by_country.append(deaths_global_by_country.sum(axis=0).rename("Total"))
-plot_deaths(deaths_global_by_country, "2/16/20")
+# plot_deaths(deaths_global_by_country, "2/16/20")
