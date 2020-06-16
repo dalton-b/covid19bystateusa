@@ -57,7 +57,6 @@ def sort_by_country(df):
     df = df.groupby("Country/Region").sum()
     return df
 
-
 confirmed_US = confirmed_US.apply(pd.to_numeric, errors='ignore')
 confirmed_US_by_state = sort_by_state(confirmed_US)
 
@@ -73,6 +72,8 @@ if verbose:
   deaths_US_by_state.to_csv('deaths_US_by_state.csv')
   deaths_global_by_country.to_csv("death_global_by_country.csv")
 
+population = deaths_US_by_state["Population"].to_dict()
+
 def plot_active(df, name, start_date):
 
   now = datetime.datetime.now()
@@ -80,62 +81,62 @@ def plot_active(df, name, start_date):
   # assuming that active cases get "resolved" in 4 weeks
   start_index = df.columns.get_loc(start_date)
 
-  population = {}
-  population["Alabama"] = 4900000
-  population["Alaska"] = 731545
-  population["Arizona"] = 7279000
-  population["Arkansas"] = 3018000
-  population["California"] = 39510000
-  population["Colorado"] = 5759000
-  population["Connecticut"] = 3565000
-  population["Delaware"] = 973764
-  population["District of Columbia"] = 705749
-  population["Florida"] = 21480000
-  population["Georgia"] = 10620000
-  population["Guam"] = 165768
-  population["Hawaii"] = 1416000
-  population["Idaho"] = 1787000
-  population["Illinois"] = 12670000
-  population["Indiana"] = 6732000
-  population["Iowa"] = 3155000
-  population["Kansas"] = 2913000
-  population["Kentucky"] = 4468000
-  population["Louisiana"] = 4649000
-  population["Maine"] = 1344000
-  population["Maryland"] = 6046000
-  population["Massachusetts"] = 6893000
-  population["Michigan"] = 9987000
-  population["Minnesota"] = 5640000
-  population["Mississippi"] = 2976000
-  population["Missouri"] = 6137000
-  population["Montana"] = 1069000
-  population["Nebraska"] = 1934000
-  population["Nevada"] = 3080000
-  population["New Hampshire"] = 1360000
-  population["New Jersey"] = 8882000
-  population["New Mexico"] = 2097000
-  population["New York"] = 19450000
-  population["North Carolina"] = 10490000
-  population["North Dakota"] = 762062
-  population["Ohio"] = 11690000
-  population["Oklahoma"] = 3957000
-  population["Oregon"] = 4218000
-  population["Pennsylvania"] = 12800000
-  population["Puerto Rico"] = 3194000
-  population["Rhode Island"] = 1059000
-  population["South Carolina"] = 5149000
-  population["South Dakota"] = 884659
-  population["Tennessee"] = 6829000
-  population["Texas"] = 29000000
-  population["Utah"] = 3206000
-  population["Vermont"] = 623989
-  population["Virgin Islands"] = 106977
-  population["Virginia"] = 8536000
-  population["Washington"] = 7615000
-  population["West Virginia"] = 1792000
-  population["Wisconsin"] = 5822000
-  population["Wyoming"] = 578759
-  population["American Samoa"] = 55465
+  # population = {}
+  # population["Alabama"] = 4900000
+  # population["Alaska"] = 731545
+  # population["Arizona"] = 7279000
+  # population["Arkansas"] = 3018000
+  # population["California"] = 39510000
+  # population["Colorado"] = 5759000
+  # population["Connecticut"] = 3565000
+  # population["Delaware"] = 973764
+  # population["District of Columbia"] = 705749
+  # population["Florida"] = 21480000
+  # population["Georgia"] = 10620000
+  # population["Guam"] = 165768
+  # population["Hawaii"] = 1416000
+  # population["Idaho"] = 1787000
+  # population["Illinois"] = 12670000
+  # population["Indiana"] = 6732000
+  # population["Iowa"] = 3155000
+  # population["Kansas"] = 2913000
+  # population["Kentucky"] = 4468000
+  # population["Louisiana"] = 4649000
+  # population["Maine"] = 1344000
+  # population["Maryland"] = 6046000
+  # population["Massachusetts"] = 6893000
+  # population["Michigan"] = 9987000
+  # population["Minnesota"] = 5640000
+  # population["Mississippi"] = 2976000
+  # population["Missouri"] = 6137000
+  # population["Montana"] = 1069000
+  # population["Nebraska"] = 1934000
+  # population["Nevada"] = 3080000
+  # population["New Hampshire"] = 1360000
+  # population["New Jersey"] = 8882000
+  # population["New Mexico"] = 2097000
+  # population["New York"] = 19450000
+  # population["North Carolina"] = 10490000
+  # population["North Dakota"] = 762062
+  # population["Ohio"] = 11690000
+  # population["Oklahoma"] = 3957000
+  # population["Oregon"] = 4218000
+  # population["Pennsylvania"] = 12800000
+  # population["Puerto Rico"] = 3194000
+  # population["Rhode Island"] = 1059000
+  # population["South Carolina"] = 5149000
+  # population["South Dakota"] = 884659
+  # population["Tennessee"] = 6829000
+  # population["Texas"] = 29000000
+  # population["Utah"] = 3206000
+  # population["Vermont"] = 623989
+  # population["Virgin Islands"] = 106977
+  # population["Virginia"] = 8536000
+  # population["Washington"] = 7615000
+  # population["West Virginia"] = 1792000
+  # population["Wisconsin"] = 5822000
+  # population["Wyoming"] = 578759
+  # population["American Samoa"] = 55465
 
   for index, row, in df.iterrows():
     total_cases = row.iloc[start_index:]
@@ -144,7 +145,7 @@ def plot_active(df, name, start_date):
     contagious_period = 28
     for i in range(contagious_period, len(total_cases)):
       active_cases.append((total_cases[i]-total_cases[i-contagious_period]))
-      plot_name = "Number of People Sick"
+      plot_name = "Number of cases"
       dates.append(total_cases.index[i])
 
     fig, ax = plt.subplots()
@@ -154,23 +155,26 @@ def plot_active(df, name, start_date):
       max_cases = 100
     ax.set(ylim=(0, max_cases * 1.1))
     if index in population.keys():
+      # The cruise ships have a population of 0, which breaks things
+      if population[index] == 0.0:
+        break
       ax2.set(ylim=(0, max_cases / population[index] * 100))
 
     ax.plot(dates, active_cases)
     ax.set_xticks(np.arange(0, len(active_cases), step=7))
     ax.tick_params(axis='x', rotation=45)
     ax.set_ylabel(plot_name)
-    ax2.set_ylabel("Percentage of Population Sick")
+    ax2.set_ylabel("Percentage of Population")
     plt.gcf().subplots_adjust(bottom=0.15)
-    fig.suptitle('Active Cases ' + index + " " + today)
+    fig.suptitle('New Cases in Last 28 Days ' + index + " " + today)
     fig.savefig('plots/' + name + '/Active_' + index + '.png', bbox_inches='tight')
     plt.close()
 
 
 confirmed_US_by_state = confirmed_US_by_state.append(confirmed_US_by_state.sum(axis=0).rename("Total"))
-# plot_active(confirmed_US_by_state, "Active_Cases", "2/22/20")
+plot_active(confirmed_US_by_state, "Active_Cases", "2/22/20")
 
-def plot_deaths(df, start_date):
+def plot_deaths(df, start_date, path):
 
   now = datetime.datetime.now()
   today = now.strftime("%Y_%m_%d")
@@ -186,8 +190,6 @@ def plot_deaths(df, start_date):
     sma_deaths = []
     sma = 8
     mid = int(sma / 2)
-    if index == 'Georgia':
-      hi = 0
     for i in range(mid, len(new_deaths)-mid):
       sma_deaths.append(np.sum(new_deaths[i-mid:i+mid])/sma)
 
@@ -202,11 +204,11 @@ def plot_deaths(df, start_date):
     ax.tick_params(axis='x', rotation=45)
     ax.set_ylabel('Deaths')
     fig.suptitle("Deaths " + index + " " + today)
-    fig.savefig('plots/Deaths/Deaths_' + index + '.png', bbox_inches='tight')
+    fig.savefig(path + 'Deaths_' + index + '.png', bbox_inches='tight')
     plt.close()
 
 deaths_US_by_state = deaths_US_by_state.append(deaths_US_by_state.sum(axis=0).rename("Total"))
-plot_deaths(deaths_US_by_state, "3/16/20")
+plot_deaths(deaths_US_by_state, "3/16/20", 'plots/Deaths/')
 
 deaths_global_by_country = deaths_global_by_country.append(deaths_global_by_country.sum(axis=0).rename("Total"))
-# plot_deaths(deaths_global_by_country, "2/16/20")
+plot_deaths(deaths_global_by_country, "2/16/20", 'plots/Global_Deaths/')

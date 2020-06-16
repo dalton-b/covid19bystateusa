@@ -2,7 +2,6 @@ To-Do:
 
 Write an explainer page
 Add "global" page
-Use population numbers from dataset
 Make graph titles more readable
 Automatically update every day
 
@@ -18,3 +17,5 @@ Expand page margins
 Organize Guam and Puerto Rico
 Add American Samoa
 Add "updated: ___" timestamp to web page
+Use population numbers from dataset
+
