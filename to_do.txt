@@ -4,6 +4,7 @@ Write an explainer page
 Add "global" page
 Make graph titles more readable
 Automatically update every day
+Normalize graph start dates
 
 
 
