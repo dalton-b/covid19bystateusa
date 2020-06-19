@@ -23,7 +23,7 @@ import numpy as np
 import datetime
 
 
-verbose = False
+verbose = True
 
 
 def adjust_header(df):
@@ -80,64 +80,6 @@ def plot_active(df, name, start_date):
   today = now.strftime("%Y_%m_%d")
   # assuming that active cases get "resolved" in 4 weeks
   start_index = df.columns.get_loc(start_date)
-
-  # population = {}
-  # population["Alabama"] = 4900000
-  # population["Alaska"] = 731545
-  # population["Arizona"] = 7279000
-  # population["Arkansas"] = 3018000
-  # population["California"] = 39510000
-  # population["Colorado"] = 5759000
-  # population["Connecticut"] = 3565000
-  # population["Delaware"] = 973764
-  # population["District of Columbia"] = 705749
-  # population["Florida"] = 21480000
-  # population["Georgia"] = 10620000
-  # population["Guam"] = 165768
-  # population["Hawaii"] = 1416000
-  # population["Idaho"] = 1787000
-  # population["Illinois"] = 12670000
-  # population["Indiana"] = 6732000
-  # population["Iowa"] = 3155000
-  # population["Kansas"] = 2913000
-  # population["Kentucky"] = 4468000
-  # population["Louisiana"] = 4649000
-  # population["Maine"] = 1344000
-  # population["Maryland"] = 6046000
-  # population["Massachusetts"] = 6893000
-  # population["Michigan"] = 9987000
-  # population["Minnesota"] = 5640000
-  # population["Mississippi"] = 2976000
-  # population["Missouri"] = 6137000
-  # population["Montana"] = 1069000
-  # population["Nebraska"] = 1934000
-  # population["Nevada"] = 3080000
-  # population["New Hampshire"] = 1360000
-  # population["New Jersey"] = 8882000
-  # population["New Mexico"] = 2097000
-  # population["New York"] = 19450000
-  # population["North Carolina"] = 10490000
-  # population["North Dakota"] = 762062
-  # population["Ohio"] = 11690000
-  # population["Oklahoma"] = 3957000
-  # population["Oregon"] = 4218000
-  # population["Pennsylvania"] = 12800000
-  # population["Puerto Rico"] = 3194000
-  # population["Rhode Island"] = 1059000
-  # population["South Carolina"] = 5149000
-  # population["South Dakota"] = 884659
-  # population["Tennessee"] = 6829000
-  # population["Texas"] = 29000000
-  # population["Utah"] = 3206000
-  # population["Vermont"] = 623989
-  # population["Virgin Islands"] = 106977
-  # population["Virginia"] = 8536000
-  # population["Washington"] = 7615000
-  # population["West Virginia"] = 1792000
-  # population["Wisconsin"] = 5822000
-  # population["Wyoming"] = 578759
-  # population["American Samoa"] = 55465
-
   for index, row, in df.iterrows():
     total_cases = row.iloc[start_index:]
     active_cases = []
@@ -157,7 +99,8 @@ def plot_active(df, name, start_date):
     if index in population.keys():
       # The cruise ships have a population of 0, which breaks things
       if population[index] == 0.0:
-        break
+        plt.close()
+        continue
       ax2.set(ylim=(0, max_cases / population[index] * 100))
 
     ax.plot(dates, active_cases)
