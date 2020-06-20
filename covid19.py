@@ -23,7 +23,7 @@ import numpy as np
 import datetime
 
 
-verbose = True
+verbose = False
 
 
 def adjust_header(df):

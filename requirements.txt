@@ -1,0 +1,4 @@
+pandas==1.0.3
+urllib3==1.25.7
+matplotlib==3.1.1
+numpy==1.18.3
