@@ -109,7 +109,7 @@ def plot_active(df, name, start_date):
     ax.set_ylabel(plot_name)
     ax2.set_ylabel("Percentage of Population")
     plt.gcf().subplots_adjust(bottom=0.15)
-    fig.suptitle('New Cases in Last 28 Days ' + index + " " + today)
+    fig.suptitle(index + ' - New Cases in Last 28 Days - ' + today)
     fig.savefig('plots/' + name + '/Active_' + index + '.png', bbox_inches='tight')
     plt.close()
 
@@ -146,12 +146,12 @@ def plot_deaths(df, start_date, path):
     ax.set_xticks(np.arange(0, len(sma_deaths), step=7))
     ax.tick_params(axis='x', rotation=45)
     ax.set_ylabel('Deaths')
-    fig.suptitle("Deaths " + index + " " + today)
-    fig.savefig(path + 'Deaths_' + index + '.png', bbox_inches='tight')
+    fig.suptitle(index + " - Deaths - " + today)
+    fig.savefig(path + 'Deaths_' + index + '.png', bbox_inches='tight', dpi=75)
     plt.close()
 
 deaths_US_by_state = deaths_US_by_state.append(deaths_US_by_state.sum(axis=0).rename("Total"))
-plot_deaths(deaths_US_by_state, "3/16/20", 'plots/Deaths/')
+plot_deaths(deaths_US_by_state, "3/17/20", 'plots/Deaths/')
 
 deaths_global_by_country = deaths_global_by_country.append(deaths_global_by_country.sum(axis=0).rename("Total"))
 plot_deaths(deaths_global_by_country, "2/16/20", 'plots/Global_Deaths/')
