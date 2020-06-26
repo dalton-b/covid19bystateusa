@@ -23,7 +23,7 @@ import numpy as np
 import datetime
 
 
-verbose = False
+verbose = True
 
 
 def adjust_header(df):
@@ -154,4 +154,5 @@ deaths_US_by_state = deaths_US_by_state.append(deaths_US_by_state.sum(axis=0).re
 plot_deaths(deaths_US_by_state, "3/17/20", 'plots/Deaths/')
 
 deaths_global_by_country = deaths_global_by_country.append(deaths_global_by_country.sum(axis=0).rename("Total"))
-plot_deaths(deaths_global_by_country, "2/16/20", 'plots/Global_Deaths/')
+US_deaths = pd.DataFrame(deaths_global_by_country.loc["US", :]).T
+plot_deaths(US_deaths, "2/16/20", 'plots/Global_Deaths/')
