@@ -23,7 +23,7 @@ import numpy as np
 import datetime
 
 
-verbose = True
+verbose = False
 
 
 def adjust_header(df):
@@ -101,16 +101,16 @@ def plot_active(df, name, start_date):
       if population[index] == 0.0:
         plt.close()
         continue
-      ax2.set(ylim=(0, max_cases / population[index] * 100))
+      ax2.set(ylim=(0, max_cases * 1000 / population[index]))
 
     ax.plot(dates, active_cases)
     ax.set_xticks(np.arange(0, len(active_cases), step=7))
     ax.tick_params(axis='x', rotation=45)
     ax.set_ylabel(plot_name)
-    ax2.set_ylabel("Percentage of Population")
+    ax2.set_ylabel("Cases per 1,000 People")
     plt.gcf().subplots_adjust(bottom=0.15)
     fig.suptitle(index + ' - New Cases in Last 28 Days - ' + today)
-    fig.savefig('plots/' + name + '/Active_' + index + '.png', bbox_inches='tight')
+    fig.savefig('plots/' + name + '/Active_' + index + '.png', bbox_inches='tight', dpi=75)
     plt.close()
 
 
@@ -137,15 +137,23 @@ def plot_deaths(df, start_date, path):
       sma_deaths.append(np.sum(new_deaths[i-mid:i+mid])/sma)
 
     fig, ax = plt.subplots()
+    ax2 = ax.twinx()
     max_cases = np.nanmax(sma_deaths)
     if max_cases == 0:
       max_cases = 100
     ax.set(ylim=(0, max_cases * 1.1))
+    if index in population.keys():
+      # The cruise ships have a population of 0, which breaks things
+      if population[index] == 0.0:
+        plt.close()
+        continue
+      ax2.set(ylim=(0, max_cases * 1000000 / population[index]))
     ax.plot(deaths.index[mid:], new_deaths[mid:], color='powderblue')
     ax.plot(deaths.index[mid:len(deaths)-mid], sma_deaths, color='orange')
     ax.set_xticks(np.arange(0, len(sma_deaths), step=7))
     ax.tick_params(axis='x', rotation=45)
     ax.set_ylabel('Deaths')
+    ax2.set_ylabel("Deaths per 1 Million People")
     fig.suptitle(index + " - Deaths - " + today)
     fig.savefig(path + 'Deaths_' + index + '.png', bbox_inches='tight', dpi=75)
     plt.close()
