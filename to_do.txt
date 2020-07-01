@@ -3,7 +3,7 @@ To-Do:
 Write an explainer page
 Add "global" page
 Automatically update every day
-
+Change pct population to "per 10,000 people"
 
 
 

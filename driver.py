@@ -20,7 +20,7 @@ def update():
                 f.write(str(soup))
 
 
-update()
+# update()
 
 while True:
     now = datetime.datetime.now()
