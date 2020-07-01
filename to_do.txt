@@ -1,7 +1,9 @@
 To-Do:
 
 Write an explainer page
-
+Add global populations
+Clean up the CSS
+Render graphs in Javascript with D3
 
 
 
