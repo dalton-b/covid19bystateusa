@@ -2,3 +2,4 @@
 .idea*
 no_git/*
 *.csv
+plots/
