@@ -8,7 +8,7 @@ import numpy as np
 import datetime
 
 
-verbose = False
+verbose = False 
 
 
 def adjust_header(df):
@@ -33,7 +33,7 @@ reader = csv.reader(r)
 deaths_global = pd.DataFrame(reader)
 deaths_global = adjust_header(deaths_global)
 
-r = request.urlopen('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv').read().decode('utf8').split("\n")
+r = request.urlopen('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv').read().decode('utf8').split("\n")
 reader = csv.reader(r)
 confirmed_global = pd.DataFrame(reader)
 confirmed_global = adjust_header(confirmed_global)
