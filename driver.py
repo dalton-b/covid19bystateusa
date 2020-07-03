@@ -20,10 +20,10 @@ def update():
                 f.write(str(soup))
 
 
-# update()
+update()
 
-while True:
-    now = datetime.datetime.now()
-    if now.hour == 10:
-        update()
-    time.sleep(3595)
+# while True:
+#     now = datetime.datetime.now()
+#     if now.hour == 10:
+#         update()
+#     time.sleep(3595)
