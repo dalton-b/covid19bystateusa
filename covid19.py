@@ -6,6 +6,7 @@ import urllib.request as request
 import matplotlib.pyplot as plt
 import numpy as np
 import datetime
+import math
 
 
 verbose = False 
@@ -68,6 +69,8 @@ if verbose:
     confirmed_global_by_country.to_csv("confirmed_global_by_country.csv")
 
 population_us = deaths_US_by_state["Population"].to_dict()
+# Global population data retrieved from: https://data.worldbank.org/indicator/SP.POP.TOTL
+population_global = pd.read_csv('global_pop.csv', index_col=0).to_dict()['Population']
 
 
 def plot_active(df, start_date, path, population={}):
@@ -91,10 +94,21 @@ def plot_active(df, start_date, path, population={}):
     if max_cases == 0:
       max_cases = 100
     ax.set(ylim=(0, max_cases * 1.1))
+    if index=='Eritrea':
+      hi = 0
     if index in population.keys():
+      if math.isnan(population[index]):
+        plt.close()
+        continue
+      if population[index] == 0.0:
+        plt.close()
+        continue
       ax2 = ax.twinx()
       ax2.set_ylabel("Cases per 1,000 People")
       # The cruise ships have a population of 0, which breaks things
+      if math.isnan(population[index]):
+        plt.close()
+        continue
       if population[index] == 0.0:
         plt.close()
         continue
@@ -115,7 +129,7 @@ confirmed_US_by_state = confirmed_US_by_state.append(confirmed_US_by_state.sum(a
 plot_active(confirmed_US_by_state, "2/22/20", "plots/us/cases/", population_us)
 
 confirmed_global_by_country = confirmed_global_by_country.append(confirmed_global_by_country.sum(axis=0).rename("Total"))
-plot_active(confirmed_global_by_country, "1/22/20", "plots/global/cases/")
+plot_active(confirmed_global_by_country, "1/22/20", "plots/global/cases/", population_global)
 
 
 def plot_deaths(df, start_date, path, population={}):
@@ -143,12 +157,15 @@ def plot_deaths(df, start_date, path, population={}):
       max_cases = 100
     ax.set(ylim=(0, max_cases * 1.1))
     if index in population.keys():
-      ax2 = ax.twinx()
-      ax2.set_ylabel("Deaths per 1 Million People")
-      # The cruise ships have a population of 0, which breaks things
+      if math.isnan(population[index]):
+        plt.close()
+        continue
       if population[index] == 0.0:
         plt.close()
         continue
+      ax2 = ax.twinx()
+      ax2.set_ylabel("Deaths per 1 Million People")
+      # The cruise ships have a population of 0, which breaks things
       ax2.set(ylim=(0, max_cases * 1000000 / population[index]))
     ax.plot(deaths.index[mid:], new_deaths[mid:], color='powderblue')
     ax.plot(deaths.index[mid:len(deaths)-mid], sma_deaths, color='orange')
@@ -164,4 +181,4 @@ deaths_US_by_state = deaths_US_by_state.append(deaths_US_by_state.sum(axis=0).re
 plot_deaths(deaths_US_by_state, "3/17/20", 'plots/us/deaths/',  population_us)
 
 deaths_global_by_country = deaths_global_by_country.append(deaths_global_by_country.sum(axis=0).rename("Total"))
-plot_deaths(deaths_global_by_country, "2/16/20", 'plots/global/deaths/')
+plot_deaths(deaths_global_by_country, "2/16/20", 'plots/global/deaths/', population_global)

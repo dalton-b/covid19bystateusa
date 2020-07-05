@@ -1,8 +1,5 @@
-import time
 import datetime
 import bs4
-import matplotlib.pyplot as plt
-import numpy as np
 
 
 def update():
@@ -21,9 +18,3 @@ def update():
 
 
 update()
-
-# while True:
-#     now = datetime.datetime.now()
-#     if now.hour == 10:
-#         update()
-#     time.sleep(3595)
