@@ -1,6 +1,15 @@
 import datetime
 import bs4
 
+# We need imports from covid19.py otherwise it throws a NameError
+import pandas as pd
+import csv
+import urllib.request as request
+import matplotlib.pyplot as plt
+import numpy as np
+import datetime
+import math
+
 
 def update():
     _now = datetime.datetime.now()
