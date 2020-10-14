@@ -17,7 +17,7 @@ def update_time(filename):
         now.minute) + ' EDT'
     with open(filename) as file:
         txt = file.read()
-        soup = bs4.BeautifulSoup(txt, features='html5lib')
+        soup = bs4.BeautifulSoup(txt, features='html.parser')
     for p_tag in soup.find_all('p'):
         if 'Last Updated:' in p_tag.contents[0]:
             p_tag.string = 'Last Updated: ' + now_index
@@ -26,7 +26,7 @@ def update_time(filename):
 
 
 def update():
-    exec(open('covid19.py').read())
+    # exec(open('covid19.py').read())
     update_time('index.html')
     update_time('global.html')
 
