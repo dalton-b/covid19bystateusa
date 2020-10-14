@@ -13,7 +13,7 @@ import math
 
 def update_time(filename):
     now = datetime.datetime.now()
-    now_index = str(now.month) + '/' + str(now.day) + '/' + str(now.year) + ' ' + str(now.hour - 4) + ':' + str(
+    now_index = str(now.month) + '/' + str(now.day) + '/' + str(now.year) + ' ' + str(now.hour) + ':' + str(
         now.minute) + ' EDT'
     with open(filename) as file:
         txt = file.read()
@@ -26,7 +26,7 @@ def update_time(filename):
 
 
 def update():
-    # exec(open('covid19.py').read())
+    exec(open('covid19.py').read())
     update_time('index.html')
     update_time('global.html')
 
