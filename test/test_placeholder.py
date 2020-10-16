@@ -1,2 +1,2 @@
 def test_placeholder():
-    pass
+    exec(open('run/driver.py').read())
