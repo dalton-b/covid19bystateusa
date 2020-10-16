@@ -25,10 +25,9 @@ def update_time(filename):
                 f.write(str(soup))
 
 
-def update():
-    exec(open('covid19.py').read())
+def main():
+
+    exec(open('run/covid19.py').read())
     update_time('index.html')
     update_time('global.html')
 
-
-update()

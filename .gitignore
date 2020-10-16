@@ -2,3 +2,6 @@
 .idea*
 no_git/*
 *.csv
+env/
+*.egg_info
+__pycache__

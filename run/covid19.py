@@ -94,8 +94,6 @@ def plot_active(df, start_date, path, population={}):
     if max_cases == 0:
       max_cases = 100
     ax.set(ylim=(0, max_cases * 1.1))
-    if index=='Eritrea':
-      hi = 0
     if index in population.keys():
       if math.isnan(population[index]):
         plt.close()
@@ -115,7 +113,7 @@ def plot_active(df, start_date, path, population={}):
       ax2.set(ylim=(0, max_cases * 1000 / population[index]))
 
     ax.plot(dates, active_cases)
-    ax.set_xticks(np.arange(0, len(active_cases), step=7))
+    ax.set_xticks(np.arange(0, len(active_cases), step=14))
     ax.tick_params(axis='x', rotation=45)
     ax.set_ylabel(plot_name)
 
@@ -169,7 +167,7 @@ def plot_deaths(df, start_date, path, population={}):
       ax2.set(ylim=(0, max_cases * 1000000 / population[index]))
     ax.plot(deaths.index[mid:], new_deaths[mid:], color='powderblue')
     ax.plot(deaths.index[mid:len(deaths)-mid], sma_deaths, color='orange')
-    ax.set_xticks(np.arange(0, len(sma_deaths), step=7))
+    ax.set_xticks(np.arange(0, len(sma_deaths), step=14))
     ax.tick_params(axis='x', rotation=45)
     ax.set_ylabel('Deaths')
     fig.suptitle(index + " - Deaths - " + today)
