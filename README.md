@@ -1,4 +1,4 @@
-# COVID19 BY STATE
+# COVID19 by state
 The project website is available here:
 
 https://covid19bystateusa.com
@@ -9,7 +9,8 @@ This project displays the number of COVID19 cases and deaths in each US state an
 This project uses a Python 3.7.x environment.
 
 In the command line, run
-```terminal python3 -m venv ./env
+```terminal 
+python3 -m venv ./env
 source ./env/bin/activate
 pip3 install -e .
 
