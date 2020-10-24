@@ -1,10 +1,8 @@
 name: Python package
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  schedule:
+    -cron: "0 0 * * *" # runs at 00:00 UTC everyday
 
 jobs:
   build:
@@ -27,3 +25,16 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+    - name: Update data
+      run: |
+        covid_update
+    - name: Commit files # Code snippet source: https://github.com/ad-m/github-push-action
+      run: |
+      git config --local user.email "action@github.com"
+      git config --local user.name "GitHub Action"
+      git commit -m "Add changes" -a
+    - name: Push changes
+    uses: ad-m/github-push-action@master
+    with:
+      # github_token: ${{ secrets.GITHUB_TOKEN }} # I'm not sure how to pass this in
+      branch: master
