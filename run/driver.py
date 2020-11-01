@@ -14,7 +14,7 @@ import math
 def update_time(filename):
     now = datetime.datetime.now()
     now_index = str(now.month) + '/' + str(now.day) + '/' + str(now.year) + ' ' + str(now.hour) + ':' + str(
-        now.minute) + ' EDT'
+        now.minute) + ' EST'
     with open(filename) as file:
         txt = file.read()
         soup = bs4.BeautifulSoup(txt, features='html.parser')
