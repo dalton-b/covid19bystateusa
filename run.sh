@@ -17,3 +17,14 @@ echo "Activating environment..."
 source ./env/bin/activate
 echo "Installing packages..."
 pip3 install -e .
+echo "Running the project..."
+covid_update
+echo "Staging changes..."
+git add .
+echo "Committing changes..."
+git commit -m "test_01"
+echo "Setting origin..."
+git remote set-url origin git@github.com:dalton-b/covid19bystateusa.git
+echo "Pushing changes..."
+GIT_SSH_COMMAND='ssh -i' ${{secrets.SECRET_KEY}} git push
+echo "Done!"
