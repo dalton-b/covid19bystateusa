@@ -2,7 +2,7 @@ name: main
 
 on:
   schedule:
-    - cron: "*/3 * * * *" # runs every third minute
+    - cron: "*/1 * * * *" # runs every third minute
 
 jobs:
   build:
