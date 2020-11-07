@@ -12,3 +12,5 @@
 # GIT_SSH_COMMAND='ssh -i' ${{secrets.SECRET_KEY}} git push
 ls
 python3 -m venv ./env
+source ./env/bin/activate
+pip3 install -e .
