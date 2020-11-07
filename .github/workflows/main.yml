@@ -17,5 +17,5 @@ jobs:
       with: { ref: master }
     - name: Update data
       run: |
-        sh run.sh
+        bash run.sh
 
