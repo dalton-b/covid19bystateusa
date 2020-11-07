@@ -12,13 +12,12 @@ jobs:
         python-version: [3.8]
     
     steps:
-      - shell: bash
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
       - name: Git checkout
         uses: actions/checkout@v2
         with: { ref: master }
       - name: Update data
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           bash run.sh SECRET_KEY
 
