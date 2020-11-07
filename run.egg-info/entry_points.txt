@@ -1,3 +1,0 @@
-[console_scripts]
-covid_update = run.driver:main
-

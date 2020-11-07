@@ -1,5 +1,0 @@
-pandas
-urllib3
-matplotlib
-beautifulsoup4
-numpy

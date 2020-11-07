@@ -1,9 +1,0 @@
-README.md
-setup.py
-run.egg-info/PKG-INFO
-run.egg-info/SOURCES.txt
-run.egg-info/dependency_links.txt
-run.egg-info/entry_points.txt
-run.egg-info/requires.txt
-run.egg-info/top_level.txt
-test/test_placeholder.py
