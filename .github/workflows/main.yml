@@ -2,7 +2,7 @@ name: main
 
 on:
   schedule:
-    - cron: "* * */1 * *" # runs every third minute
+    - cron: "*/1 * * * *" # runs every minute
 
 jobs:
   build:
@@ -12,10 +12,13 @@ jobs:
         python-version: [3.8]
     
     steps:
-    - name: Git checkout
-      uses: actions/checkout@v2
-      with: { ref: master }
-    - name: Update data
-      run: |
-        bash run.sh
+      - shell: bash
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      - name: Git checkout
+        uses: actions/checkout@v2
+        with: { ref: master }
+      - name: Update data
+        run: |
+          bash run.sh SECRET_KEY
 
