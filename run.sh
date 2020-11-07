@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # git clone https://github.com/dalton-b/covid19bystateusa.git
 # cd covid19bystateusa
 # python3 -m venv ./env
