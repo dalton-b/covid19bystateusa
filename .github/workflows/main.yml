@@ -27,8 +27,15 @@ jobs:
         uses: actions/checkout@v2
         with: { ref: master }
       - name: Update data
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
-          bash run.sh "$SECRET_KEY"
+          bash run.sh
+      - name: Commit files
+        run: |
+          git config --local user.name "dalton-b"
+          git commit -m "Add changes" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
 
