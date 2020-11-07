@@ -5,3 +5,4 @@ no_git/*
 env/
 *.egg_info
 __pycache__
+run.egg-info/
