@@ -19,6 +19,8 @@ echo "Installing packages..."
 pip3 install -e .
 echo "Running the project..."
 covid_update
+echo "Setting GitHub username..."
+git config user.name "dalton-b"
 echo "Staging changes..."
 git add .
 echo "Committing changes..."
