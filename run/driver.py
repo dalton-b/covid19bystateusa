@@ -13,7 +13,7 @@ import math
 
 def update_time(filename):
     now = datetime.datetime.now()
-    now_index = str(now.month) + '/' + str(now.day) + '/' + str(now.year) + ' ' + str(now.hour) + ':' + str(
+    now_index = str(now.month) + '/' + str(now.day) + '/' + str(now.year) + ' ' + str(now.hour - 5) + ':' + str(
         now.minute) + ' EST'
     with open(filename) as file:
         txt = file.read()
